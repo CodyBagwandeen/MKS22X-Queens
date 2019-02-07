@@ -8,6 +8,9 @@ public class QueenBoard{
     System.out.println("testing toString on blank board");
     System.out.println("Q1 \n");
     System.out.println(Q1);
+
+    System.out.println("Q1 \n");
+    System.out.println(Q1);
   }
 
   public String toString(){
@@ -30,5 +33,16 @@ public class QueenBoard{
 
   public QueenBoard(int size){
     board = new int[size][size];
+
+  }
+
+  private boolean addQueen(int r, int c){
+    board[r][c] = -1;
+    return true;
+  }
+
+  private boolean removeQueen(int r, int c){
+    // do something later
+    return true;
   }
 }
