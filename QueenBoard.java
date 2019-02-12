@@ -208,7 +208,7 @@ public class QueenBoard{
   }
   public int countH(int col){
     int l = board.length; // big brain play so i dont have to type board.length 1000000 times
-    int sum = 0;
+    int sum = 0;  // amount of solutions
     if( col >=  l){
       return 1;
     } else {
