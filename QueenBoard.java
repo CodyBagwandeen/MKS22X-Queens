@@ -5,15 +5,15 @@ public class QueenBoard{
     System.out.println("Initiliazing a board");
     System.out.println("Q1 = new QueenBoard(5)\n");
 
-    QueenBoard Q1 = new QueenBoard(5);
+    QueenBoard Q1 = new QueenBoard(8);
 
     System.out.println("testing toString on blank board");
     System.out.println("Q1\n");
     System.out.println(Q1);
 
     System.out.println("Testing adding a queen");
-    System.out.println("Q1.addQueen(3,0) : Should be True");
-    System.out.println(Q1.addQueen(3,0));
+    System.out.println("Q1.addQueen(4,0) : Should be True");
+    System.out.println(Q1.addQueen(4,0));
 
     System.out.println("Q1\n");
     System.out.println(Q1);
@@ -21,8 +21,8 @@ public class QueenBoard{
     System.out.println(Q1.toStringdebug());
 
     System.out.println("Testing adding a queen");
-    System.out.println("Q1.addQueen(2,1) : Should be False");
-    System.out.println(Q1.addQueen(2,1));
+    System.out.println("Q1.addQueen(3,1) : Should be False");
+    System.out.println(Q1.addQueen(3,1));
 
     System.out.println("Q1\n");
     System.out.println(Q1);
@@ -57,6 +57,20 @@ public class QueenBoard{
     System.out.println(Q2);
     System.out.println("Q2 debug\n");
     System.out.println(Q2.toStringdebug());
+
+    QueenBoard Q3 = new QueenBoard(8);
+
+    System.out.println("Testing counting");
+    System.out.println("Q3.countSolutions : Should be 92");
+    System.out.println(Q3.countSolutions());
+
+    System.out.println("Q3\n");
+    System.out.println(Q3);
+    System.out.println("Q3 debug\n");
+    System.out.println(Q3.toStringdebug());
+
+
+
 
   }
 
@@ -106,10 +120,10 @@ public class QueenBoard{
       for(int index = 0; c + index < board.length ; index++){ // marking across
         board[r][c + index] += 1;
       }
-      for( int index = 0; r + index < board.length ; index++){ // marking diagonally down
+      for( int index = 0; r + index < board.length && c + index < board.length; index++){ // marking diagonally down
         board[r+index][c+index] += 1;
       }
-      for(int index = 0; r - index >= 0 ; index++){ // marking diagonally up
+      for(int index = 0; r - index >= 0 && c + index < board.length; index++){ // marking diagonally up
         board[r-index][c+ index] += 1;
       }
       board[r][c] = -1;
@@ -125,10 +139,10 @@ public class QueenBoard{
       for(int index = 0; c + index < board.length ; index++){ // marking across
         board[r][c + index] -= 1;
       }
-      for( int index = 0; r + index < board.length ; index++){ // marking diagonally down
+      for( int index = 0; r + index < board.length && c + index < board.length; index++){ // marking diagonally down
         board[r+index][c+index] -= 1;
       }
-      for(int index = 0; r - index >= 0 ; index++){ // marking diagonally up
+      for(int index = 0; r - index >= 0 && c + index < board.length; index++){ // marking diagonally up
         board[r-index][c+ index] -= 1;
       }
       board[r][c] = 0;
@@ -158,34 +172,54 @@ public class QueenBoard{
   }
 
   public boolean solveR(int col){
-    if (col == board.length){
+    int l = board.length; // big brain play so i dont have to type board.length 1000000 times
+    if( col >=  l){
       return true;
     } else {
-      for(int r = 0; r < board.length; r++){
-        if(addQueen(r,col)){
+      for( int r = 0; r < l; r++){
+        if( addQueen(r,col)){
           if(solveR(col+1)){
             return true;
-          } else{
-              removeQueen(r,col);
-              return false;
-            }
+          }else {
+            removeQueen(r,col);
           }
         }
-        return false;
       }
     }
+    return false;
 
-
+  }
 
   /**
   *@return the number of solutions found, and leaves the board filled with only 0's
   *@throws IllegalStateException when the board starts with any non-zero value
   */
 
-  /*
   public int countSolutions(){
+    for(int r = 0; r < board.length; r++){
+      for( int c = 0; c < board.length; c++){
+        if(board[r][c] != 0){
+          throw new IllegalStateException();
+        }
+      }
+    }
+    return countH(0);
+
   }
-  public int countSolutionsH(){
+  public int countH(int col){
+    int l = board.length; // big brain play so i dont have to type board.length 1000000 times
+    int sum = 0;
+    if( col >=  l){
+      return 1;
+    } else {
+      for( int r = 0; r < l; r++){
+        if(addQueen(r,col)){
+          sum += countH(col+1);
+          removeQueen(r,col);
+        }
+      }
+    }
+    return sum;
   }
-  */
+
 }
