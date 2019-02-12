@@ -12,45 +12,64 @@ public class QueenBoard{
     System.out.println(Q1);
 
     System.out.println("Testing adding a queen");
-    System.out.println("Q1.addQueen(3,1) : Should be True");
-    System.out.println(Q1.addQueen(3,1));
+    System.out.println("Q1.addQueen(3,0) : Should be True");
+    System.out.println(Q1.addQueen(3,0));
 
     System.out.println("Q1\n");
     System.out.println(Q1);
     System.out.println("Q1 debug\n");
     System.out.println(Q1.toStringdebug());
 
-    System.out.println("Q1.addQueen(2,0) : Should be True");
-    System.out.println(Q1.addQueen(2,0));
+    System.out.println("Testing adding a queen");
+    System.out.println("Q1.addQueen(2,1) : Should be False");
+    System.out.println(Q1.addQueen(2,1));
 
     System.out.println("Q1\n");
     System.out.println(Q1);
+    System.out.println("Q1 debug\n");
+    System.out.println(Q1.toStringdebug());
 
-    System.out.println("Testing adding a queen on an invalid space");
-    System.out.println("Q1.addQueen(3,1) : Should be False");
-    System.out.println(Q1.addQueen(3,1));
-
-    System.out.println("Q1\n");
-    System.out.println(Q1);
-
-    System.out.println("Testing removing a Queen");
-    System.out.println("Q1.removeQueen(2,0) : Should be True");
-    System.out.println(Q1.removeQueen(2,0));
+    System.out.println("Testing adding a queen");
+    System.out.println("Q1.addQueen(3,0) : Should be True");
+    System.out.println(Q1.addQueen(0,0));
 
     System.out.println("Q1\n");
     System.out.println(Q1);
+    System.out.println("Q1 debug\n");
+    System.out.println(Q1.toStringdebug());
+
+    System.out.println("Testing removing a queen");
+    System.out.println("Q1.removeQueen(0,0) : Should be True");
+    System.out.println(Q1.removeQueen(0,0));
+
+    System.out.println("Q1\n");
+    System.out.println(Q1);
+    System.out.println("Q1 debug\n");
+    System.out.println(Q1.toStringdebug());
+
+    QueenBoard Q2 = new QueenBoard(8);
+
+    System.out.println("Testing solving");
+    System.out.println("Q2.solve : Should be True");
+    System.out.println(Q2.solve());
+
+    System.out.println("Q2\n");
+    System.out.println(Q2);
+    System.out.println("Q2 debug\n");
+    System.out.println(Q2.toStringdebug());
+
   }
 
   public String toString(){
     String output = "";
-    for(int i = 0; i < board.length; i++ ){
-      for(int j = 0; j < board[i].length; j++){
-        if(board[j][i] == -1){
+    for(int r = 0; r < board.length; r++){
+      for( int c = 0; c < board.length; c++){
+        if(board[r][c] == -1){
           output += "Q ";
         } else {
           output += "_ ";
         }
-        if( j == board[i].length - 1){
+        if(c == board.length -1 ){
           output += "\n";
         }
       }
@@ -61,14 +80,14 @@ public class QueenBoard{
 
   public String toStringdebug(){
     String output = "";
-    for(int i = 0; i < board.length; i++ ){
-      for(int j = 0; j < board[i].length; j++){
-        if(board[j][i] == -1){
+    for(int r = 0; r < board.length; r++){
+      for( int c = 0; c < board.length; c++){
+        if(board[r][c] == -1){
           output += "Q ";
         } else {
-          output += board[j][i] + " ";
+          output += board[r][c] + " ";
         }
-        if( j == board[i].length - 1){
+        if(c == board.length -1 ){
           output += "\n";
         }
       }
@@ -84,17 +103,14 @@ public class QueenBoard{
 
   private boolean addQueen(int r, int c){
     if(board[r][c] == 0){
-      for(int index = c + 1; index < board.length; index++){
-        if( board[r][index] != -1)
-        board[r][index] += 1;
+      for(int index = 0; c + index < board.length ; index++){ // marking across
+        board[r][c + index] += 1;
       }
-      for(int index = 1; index <= r ; index++){
-        if( board[r-index][c+index] != -1)
-        board[r - index][c + index] += 1;
+      for( int index = 0; r + index < board.length ; index++){ // marking diagonally down
+        board[r+index][c+index] += 1;
       }
-      for(int index = 1; index < board.length - r ; index++){
-        if( board[r+index][c+ index] != -1)
-        board[r + index][c + index] += 1;
+      for(int index = 0; r - index >= 0 ; index++){ // marking diagonally up
+        board[r-index][c+ index] += 1;
       }
       board[r][c] = -1;
 
@@ -106,22 +122,21 @@ public class QueenBoard{
 
   private boolean removeQueen(int r, int c){
     if(board[r][c] == -1){
-      for(int index = c + 1; index < board.length; index++){
-        if( board[r][index] != -1)
-        board[r][index] -= 1;
+      for(int index = 0; c + index < board.length ; index++){ // marking across
+        board[r][c + index] -= 1;
       }
-      for(int index = 1; index <= r ; index++){
-        if( board[r-index][c+index] != -1)
-        board[r - index][c + index] -= 1;
+      for( int index = 0; r + index < board.length ; index++){ // marking diagonally down
+        board[r+index][c+index] -= 1;
       }
-      for(int index = 1; index < board.length - r ; index++){
-        if( board[r+index][c+index] != -1)
-        board[r + index][c + index] -= 1;
+      for(int index = 0; r - index >= 0 ; index++){ // marking diagonally up
+        board[r-index][c+ index] -= 1;
       }
       board[r][c] = 0;
+
       return true;
+    } else {
+      return false;
     }
-    return false;
 
   }
 
@@ -131,8 +146,36 @@ public class QueenBoard{
   *@throws IllegalStateException when the board starts with any non-zero value
   */
   public boolean solve(){
-    return false;
+    for(int r = 0; r < board.length; r++){
+      for( int c = 0; c < board.length; c++){
+        if(board[r][c] != 0){
+          throw new IllegalStateException();
+        }
+      }
+    }
+    return solveR(0);
+
   }
+
+  public boolean solveR(int col){
+    if (col == board.length){
+      return true;
+    } else {
+      for(int r = 0; r < board.length; r++){
+        if(addQueen(r,col)){
+          if(solveR(col+1)){
+            return true;
+          } else{
+              removeQueen(r,col);
+              return false;
+            }
+          }
+        }
+        return false;
+      }
+    }
+
+
 
   /**
   *@return the number of solutions found, and leaves the board filled with only 0's
@@ -141,11 +184,8 @@ public class QueenBoard{
 
   /*
   public int countSolutions(){
-
   }
-
   public int countSolutionsH(){
-
   }
   */
 }
